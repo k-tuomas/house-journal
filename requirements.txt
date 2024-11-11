@@ -1,0 +1,5 @@
+flask==3.0.3
+flask-sqlalchemy
+Flask-Migrate
+python-dotenv
+psycopg2-binary
