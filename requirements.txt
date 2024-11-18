@@ -3,3 +3,4 @@ flask-sqlalchemy
 Flask-Migrate
 python-dotenv
 psycopg2-binary
+flask-login

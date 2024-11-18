@@ -16,3 +16,26 @@ House Journal is an app designed for management of home-related information. It 
 - **Privacy Settings**: Set your house visibility to private or public. Only public houses can be viewed by others.
 - **Admin Controls**: Administrators can add or remove houses from the platform.
 
+
+## Gettingh started`
+Requirements:
+- Python12
+- Docker
+
+To run the app you need to add .env file to repository root with following values:
+```
+POSTGRES_DB=<db-name>
+POSTGRES_USER=<db-user>
+POSTGRES_PASSWORD=<db-password>
+SECRET_KEY=<session-secret>
+```
+The app uses PostgreSQL, it can be run using the docker-compose.yml (e.g run ```docker-compose up``)
+
+To run Flask app, run:
+```
+export FLASK_APP=app.py
+export FLASK_ENV=development
+flask run
+```
+
+Note that The actuall login/signup functionality is still work in progress and might not work.
