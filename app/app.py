@@ -10,12 +10,11 @@ from .routes import routes_blueprint
 
 load_dotenv()
 DB_URI = f"postgresql://{os.getenv('POSTGRES_USER')}:{os.getenv('POSTGRES_PASSWORD')}@localhost:5432/{os.getenv('POSTGRES_DB')}"
-migrate = Migrate()
 
 
 def create_app():
     app = Flask(__name__)
-
+    migrate = Migrate(app, db)
     # App configs
     app.config['SECRET_KEY'] = os.getenv(
         'SECRET_KEY')

@@ -2,3 +2,4 @@ venv
 .env
 data
 app/__pycache__/
+migrations
