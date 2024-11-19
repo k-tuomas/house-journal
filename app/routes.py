@@ -28,7 +28,7 @@ def house_rooms():
 def user(id):
     user = Users.query.get(id)
     if user:
-        return f"Welcome to {user.username}'s page!"
+        return render_template('userpage.html', user=user)
     else:
         return "User not found", 404
 
