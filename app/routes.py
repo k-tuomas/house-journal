@@ -14,9 +14,13 @@ def home():
     return render_template('home.html', public_houses=public_houses)
 
 
-@routes_blueprint.route('/house')
-def house():
-    return "Initial house page"
+@routes_blueprint.route('/house/<int:id>')
+def house(id):
+    house = House.query.get(id)
+    if House:
+        return render_template('house.html', house=house)
+    else:
+        return "House not found", 404
 
 
 @routes_blueprint.route('/house/rooms')
