@@ -29,13 +29,14 @@ POSTGRES_USER=<db-user>
 POSTGRES_PASSWORD=<db-password>
 SECRET_KEY=<session-secret>
 ```
+
 The app uses PostgreSQL, it can be run using the docker-compose.yml (e.g run ```docker-compose up``)
+You can populate the database with some test data by running ```python3 populate_db.py``` from the repository root.
 
 To run Flask app, run:
 ```
-export FLASK_APP=app.py
-export FLASK_ENV=development
+cd app
 flask run
 ```
 
-Note that The actuall login/signup functionality is still work in progress and might not work.
+## The app currently supports login, signup and listing of houses from the database. Adding new houses, rooms and features is not yet supported.
