@@ -2,7 +2,7 @@ from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import login_required, login_user, logout_user
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from .models import Users
+from app.models import House, Users
 
 # Define a blueprint
 routes_blueprint = Blueprint('routes', __name__)
@@ -10,7 +10,8 @@ routes_blueprint = Blueprint('routes', __name__)
 
 @routes_blueprint.route('/')
 def home():
-    return render_template('home.html')
+    public_houses = House.query.filter_by(visibility='public').all()
+    return render_template('home.html', public_houses=public_houses)
 
 
 @routes_blueprint.route('/house')

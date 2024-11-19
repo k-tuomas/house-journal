@@ -11,6 +11,30 @@
     <h1>Welcome to House Journal!</h1>
     <a href="{{ url_for('routes.login') }}">Login</a>
     <a href="{{ url_for('routes.signup') }}">Sign Up</a>
+
+    <h2>Public Houses</h2>
+    <div id="houses">
+        {% for house in public_houses %}
+        <div class="house-box">
+            <h3>{{ house.title }}</h3>
+            <img src="{{ url_for('static', filename='images/house_' ~ house.id ~ '.jpg') }}" alt="No Image found"
+                style="width:200px;height:150px;">
+            <a href="{{ url_for('routes.user', id=house.owner_id) }}">Owner</a>
+            <p>Number of Rooms: {{ house.rooms|length }}</p>
+            <a href="{{ url_for('routes.house', id=house.id) }}">View House</a>
+        </div>
+        {% else %}
+        <p>No public houses available.</p>
+        {% endfor %}
+    </div>
 </body>
 
 </html>
+
+<style>
+    .house-box img,
+    .house-box a {
+        display: block;
+        margin-top: 10px;
+    }
+</style>
