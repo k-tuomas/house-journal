@@ -31,11 +31,23 @@ SECRET_KEY=<session-secret>
 ```
 
 The app uses PostgreSQL, it can be run using the docker-compose.yml (e.g run ```docker-compose up``)
+
+Create venv and isntall requirements. 
+python3 venv venv 
+source ./venv/bin/activate
+pip install -r requirements.txt
+
+To migrate the models to the db run:
+```
+flask db init
+flask db migrate
+flask db upgrade
+
+```
 You can populate the database with some test data by running ```python3 populate_db.py``` from the repository root.
 
 To run Flask app, run:
 ```
-cd app
 flask run
 ```
 
