@@ -2,6 +2,7 @@ version: '3.8'
 services:
   db:
     image: postgres:latest
+    restart: always
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
@@ -10,3 +11,19 @@ services:
       - ./data/db:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+
+  web:
+    build: .
+    volumes:
+      - ./app:/app
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    environment:
+      FLASK_APP: app
+      FLASK_ENV: development
+      POSTGRES_ADDRESS: ${POSTGRES_ADDRESS}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}

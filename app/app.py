@@ -1,6 +1,5 @@
 import os
 
-from dotenv import load_dotenv
 from flask import Flask
 from flask_login import LoginManager
 from flask_migrate import Migrate
@@ -8,8 +7,8 @@ from flask_migrate import Migrate
 from .models import Users, db
 from .routes import routes_blueprint
 
-load_dotenv()
-DB_URI = f"postgresql://{os.getenv('POSTGRES_USER')}:{os.getenv('POSTGRES_PASSWORD')}@localhost:5432/{os.getenv('POSTGRES_DB')}"
+DB_URI = f"postgresql://{os.getenv('POSTGRES_USER')}:{os.getenv('POSTGRES_PASSWORD')}@{os.getenv('POSTGRES_ADDRESS')}:5432/{os.getenv('POSTGRES_DB')}"
+print(f'debug db: {DB_URI}')
 
 
 def create_app():

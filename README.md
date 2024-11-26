@@ -32,7 +32,7 @@ SECRET_KEY=<session-secret>
 
 The app uses PostgreSQL, it can be run using the docker-compose.yml (e.g run ```docker-compose up``)
 
-Create venv and isntall requirements. 
+Create venv and install requirements. 
 python3 venv venv 
 source ./venv/bin/activate
 pip install -r requirements.txt
