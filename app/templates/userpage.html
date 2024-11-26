@@ -6,4 +6,32 @@
 <div class="welcome-message">
     <h1>Welcome, {{ user.username }}!</h1>
 </div>
+
+{% if current_user.is_authenticated and current_user.id == user.id %}
+<h2>Add a New House</h2>
+<form method="POST" action="{{ url_for('routes.add_house') }}" enctype="multipart/form-data">
+    <!-- CSRF token -->
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div>
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" required>
+    </div>
+    <div>
+        <label for="construction_year">Construction Year:</label>
+        <input type="number" id="construction_year" name="construction_year" required>
+    </div>
+    <div>
+        <label for="visibility">Visibility:</label>
+        <select id="visibility" name="visibility">
+            <option value="public">Public</option>
+            <option value="private">Private</option>
+        </select>
+    </div>
+    <div>
+        <label for="image">House Image:</label>
+        <input type="file" id="image" name="image" accept="image/jpeg" required>
+    </div>
+    <button type="submit">Add House</button>
+</form>
+{% endif %}
 {% endblock %}

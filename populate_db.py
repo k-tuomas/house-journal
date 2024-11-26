@@ -44,7 +44,7 @@ def populate_db():
     for i in range(1, 5):
         print(f'Adding user {i} to database')
         user = add_user(f'user{i}', f'user{i}@example.com')
-        house = add_house(f"House of user{i}", 2024, user, 'public')
+        house = add_house(f"House of user{i}", 2024, user)
         room = add_room(f"Living room", house)
         add_feature(f"User{i} renovated something", room)
 

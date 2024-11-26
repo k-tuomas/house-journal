@@ -1,14 +1,17 @@
 import os
 
+from dotenv import load_dotenv
 from flask import Flask
 from flask_login import LoginManager
 from flask_migrate import Migrate
+from flask_wtf import CSRFProtect
 
 from .models import Users, db
 from .routes import routes_blueprint
 
-DB_URI = f"postgresql://{os.getenv('POSTGRES_USER')}:{os.getenv('POSTGRES_PASSWORD')}@{os.getenv('POSTGRES_ADDRESS')}:5432/{os.getenv('POSTGRES_DB')}"
-print(f'debug db: {DB_URI}')
+load_dotenv()
+
+DB_URI = f"postgresql://{os.getenv('POSTGRES_USER')}:{os.getenv('POSTGRES_PASSWORD')}@localhost:5432/{os.getenv('POSTGRES_DB')}"
 
 
 def create_app():
@@ -21,6 +24,9 @@ def create_app():
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     db.init_app(app)
+
+    # CSRF protection
+    csrf = CSRFProtect(app)
 
     # Login manager
     login_manager = LoginManager()

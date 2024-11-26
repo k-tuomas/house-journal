@@ -1,6 +1,10 @@
-from flask import Blueprint, flash, redirect, render_template, request, url_for
-from flask_login import login_required, login_user, logout_user
+import os
+
+from flask import (Blueprint, current_app, flash, redirect, render_template,
+                   request, url_for)
+from flask_login import current_user, login_required, login_user, logout_user
 from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.utils import secure_filename
 
 from app.models import House, Users
 
@@ -64,6 +68,13 @@ def signup():
             flash('Username or email already exists')
             return redirect(url_for('.signup'))
 
+        if not username or len(username) < 3:
+            flash('Username must be at least 3 characters long')
+            return redirect(url_for('.signup'))
+        if not password or len(password) < 6:
+            flash('Password must be at least 6 characters long')
+            return redirect(url_for('.signup'))
+
         new_user = Users(
             username=username,
             email=email,
@@ -87,3 +98,31 @@ def logout():
 @login_required
 def dashboard():
     return "Welcome to your dashboard!"
+
+
+@routes_blueprint.route('/add_house', methods=['POST'])
+@login_required
+def add_house():
+    title = request.form['title']
+    construction_year = request.form['construction_year']
+    visibility = request.form['visibility']
+    image = request.files['image']
+
+    new_house = House(
+        title=title,
+        construction_year=int(construction_year),
+        owner_id=current_user.id,
+        visibility=visibility
+    )
+    from .app import db  # Import db here to avoid circular import
+    db.session.add(new_house)
+    db.session.commit()
+
+    if image and image.filename.endswith('.jpg'):
+        filename = secure_filename(f"house_{new_house.id}.jpg")
+        filepath = os.path.join(current_app.root_path,
+                                'static/images', filename)
+        image.save(filepath)
+
+    flash('New house added successfully!')
+    return redirect(url_for('routes.home'))
