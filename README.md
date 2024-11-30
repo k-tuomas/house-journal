@@ -17,7 +17,7 @@ House Journal is an app designed for management of home-related information. It 
 - **Admin Controls**: Administrators can add or remove houses from the platform.
 
 
-## Gettingh started`
+## Gettingh started
 Requirements:
 - Python12
 - Docker
@@ -30,20 +30,25 @@ POSTGRES_PASSWORD=<db-password>
 SECRET_KEY=<session-secret>
 ```
 
-The app uses PostgreSQL, it can be run using the docker-compose.yml (e.g run ```docker-compose up``)
+The app uses PostgreSQL, it can be run using the docker-compose.yml (e.g run ```docker-compose up``).
+You can also use local postgres installation. Just create a DB and add matching parameters to .env
+
+```
+psql -U postgres
+CREATE DATABASE your_database_name;
+CREATE USER your_user_name WITH PASSWORD 'your_password';
+GRANT ALL PRIVILEGES ON DATABASE your_database_name TO your_user_name;
+\q
+psql -U your_user_name -d your_database_name -f schema.sql
+```
 
 Create venv and install requirements. 
+```
 python3 venv venv 
 source ./venv/bin/activate
 pip install -r requirements.txt
-
-To migrate the models to the db run:
 ```
-flask db init
-flask db migrate
-flask db upgrade
 
-```
 You can populate the database with some test data by running ```python3 populate_db.py``` from the repository root.
 
 To run Flask app, run:
@@ -51,4 +56,6 @@ To run Flask app, run:
 flask run
 ```
 
-## The app currently supports login, signup and listing of houses from the database. Adding new houses, rooms and features is not yet supported.
+## Current state of the project
+Most thing that were planned are implemented. Admin controls, modification of existing house info is not yet implemented.
+The visual look of the page is also as base as it can be.

@@ -1,0 +1,12 @@
+ * Debugger is active!
+ * Debugger PIN: 141-270-261
+ * Detected change in '/home/tume/projects/house-journal/app/routes.py', reloading
+ * Debugger is active!
+ * Debugger PIN: 141-270-261
+ * Detected change in '/home/tume/projects/house-journal/app/routes.py', reloading
+ * Debugger is active!
+ * Debugger PIN: 141-270-261
+127.0.0.1 - - [30/Nov/2024 09:31:19] "[32mPOST /add_room/6 HTTP/1.1[0m" 302 -
+127.0.0.1 - - [30/Nov/2024 09:31:19] "GET /user/7 HTTP/1.1" 200 -
+127.0.0.1 - - [30/Nov/2024 09:31:19] "[36mGET /static/images/house_6.jpg HTTP/1.1[0m" 304 -
+ * Detected change in '/home/tume/projects/house-journal/app/app.py', reloading

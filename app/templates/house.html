@@ -1,9 +1,67 @@
 {% extends "base.html" %}
 
-{% block title %}User Page{% endblock %}
+{% block title %}House Details{% endblock %}
 
 {% block content %}
 <div class="welcome-message">
-    <h1>Welcome to house {{ house.title }}</h1>
+    <h1>Welcome to house {{ house.house.title }}</h1>
+</div>
+
+<div class="house-details">
+    <img src="{{ url_for('static', filename='images/house_' ~ house.house.id ~ '.jpg') }}" alt="No Image found">
+    <p>Construction Year: {{ house.house.construction_year }}</p>
+    <p>Visibility: {{ house.house.visibility }}</p>
+
+    <h2>Rooms</h2>
+    <div id="rooms">
+        {% for room_detail in house.rooms %}
+        <div>
+            <h3>{{ room_detail.room.name }}</h3>
+            <h4>Features:</h4>
+            <ul>
+                {% for feature in room_detail.features %}
+                <li>{{ feature.description }}</li>
+                {% else %}
+                <li>No features available.</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% else %}
+        <p>No rooms available.</p>
+        {% endfor %}
+    </div>
+
+    <h2>Comments</h2>
+    <div id="comments">
+        {% for comment in comments %}
+        <div>
+            <p><strong>{{ comment.username }}:</strong> {{ comment.content }}</p>
+            {% if session['user_id'] == house.house.owner_id %}
+            <form method="POST"
+                action="{{ url_for('routes.delete_comment', comment_id=comment.id, house_id=house.house.id) }}">
+                <!-- CSRF token -->
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" onclick="return confirm('Delete comment?');">Delete Comment</button>
+            </form>
+            {% endif %}
+        </div>
+        {% else %}
+        <p>No comments available.</p>
+        {% endfor %}
+    </div>
+
+    {% if session['user_id'] is not none %}
+    <h3>Add a Comment</h3>
+    <form method="POST" action="{{ url_for('routes.house', id=house.house.id) }}">
+        <!-- CSRF token -->
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div>
+            <textarea name="content" rows="4" cols="50" placeholder="comment..." required></textarea>
+        </div>
+        <button type="submit">Post Comment</button>
+    </form>
+    {% else %}
+    <p>Please <a href="{{ url_for('routes.login') }}">log in</a> to comment.</p>
+    {% endif %}
 </div>
 {% endblock %}

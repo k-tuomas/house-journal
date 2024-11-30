@@ -7,7 +7,7 @@
     <h1>Welcome, {{ user.username }}!</h1>
 </div>
 
-{% if current_user.is_authenticated and current_user.id == user.id %}
+{% if session['user_id'] == user.id %}
 <h2>Add a New House</h2>
 <form method="POST" action="{{ url_for('routes.add_house') }}" enctype="multipart/form-data">
     <!-- CSRF token -->
@@ -34,4 +34,82 @@
     <button type="submit">Add House</button>
 </form>
 {% endif %}
+
+<h2>Houses</h2>
+<div id="user-houses">
+    {% for house_detail in houses %}
+    <div class="house-box">
+        <h3>{{ house_detail.house.title }}</h3>
+        <img src="{{ url_for('static', filename='images/house_' ~ house_detail.house.id ~ '.jpg') }}"
+            alt="No Image found" style="width:200px;height:150px;">
+        <p>Visibility: {{ house_detail.house.visibility }}</p>
+        <p>Number of Rooms: {{ house_detail.rooms|length }}</p>
+        <a href="{{ url_for('routes.house', id=house_detail.house.id) }}">View House</a>
+
+        {% if session['user_id'] == user.id %}
+        <form method="POST" action="{{ url_for('routes.delete_house', id=house_detail.house.id) }}"
+            style="display:inline;">
+            <!-- CSRF token -->
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" onclick="return confirm('Delete house?');">Delete</button>
+        </form>
+
+        <h4>Add a Room</h4>
+        <form method="POST" action="{{ url_for('routes.add_room', house_id=house_detail.house.id) }}">
+            <!-- CSRF token -->
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div>
+                <label for="room_name">Room Name:</label>
+                <input type="text" id="room_name" name="room_name" required>
+            </div>
+            <button type="submit">Add Room</button>
+        </form>
+
+        <div>
+            <h4>Rooms</h4>
+            {% for room_detail in house_detail.rooms %}
+            <div>
+                <h5>{{ room_detail.room.name }}</h5>
+                <form method="POST" action="{{ url_for('routes.delete_room', room_id=room_detail.room.id) }}"
+                    style="display:inline;">
+                    <!-- CSRF token -->
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" onclick="return confirm('Delete room?');">Delete Room</button>
+                </form>
+
+                <form method="POST" action="{{ url_for('routes.add_feature', room_id=room_detail.room.id) }}">
+                    <!-- CSRF token -->
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <div>
+                        <label for="feature_description">Feature Description:</label>
+                        <input type="text" id="feature_description" name="feature_description" required>
+                    </div>
+                    <button type="submit">Add Feature</button>
+                </form>
+
+                <ul>
+                    {% for feature in room_detail.features %}
+                    <li>{{ feature.description }}
+                        <form method="POST" action="{{ url_for('routes.delete_feature', feature_id=feature.id) }}"
+                            style="display:inline;">
+                            <!-- CSRF token -->
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button type="submit" onclick="return confirm('Delete feature?');">Delete Feature</button>
+                        </form>
+                    </li>
+                    {% else %}
+                    <li>No features available.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% else %}
+            <p>No rooms available.</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+    {% else %}
+    <p>No houses available.</p>
+    {% endfor %}
+</div>
 {% endblock %}
